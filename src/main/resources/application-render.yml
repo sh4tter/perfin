@@ -3,9 +3,9 @@ spring:
     name: finance-tracker
   
   datasource:
-    url: ${DATABASE_URL}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/finance_tracker}
     username: ${DB_USERNAME:finance_tracker_user}
-    password: ${DB_PASSWORD}
+    password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   
   jpa:
@@ -24,7 +24,7 @@ spring:
 
 # JWT Configuration
 jwt:
-  secret: ${JWT_SECRET}
+  secret: ${JWT_SECRET:your-secret-key-here-make-it-long-and-secure-in-production}
   expiration: ${JWT_EXPIRATION:86400000}
 
 # Server Configuration
