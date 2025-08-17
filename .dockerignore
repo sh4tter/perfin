@@ -1,0 +1,14 @@
+target/
+!target/*.jar
+.git
+.gitignore
+README.md
+SETUP_GUIDE.md
+start-dev.bat
+start-dev.ps1
+postman_collection.json
+.idea/
+*.iml
+.vscode/
+node_modules/
+*.log
