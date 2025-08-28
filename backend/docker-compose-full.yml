@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: finance_tracker_db
+    environment:
+      POSTGRES_DB: finance_tracker
+      POSTGRES_USER: finance_tracker_user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - finance_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finance_tracker_user -d finance_tracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: finance_tracker_backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/finance_tracker
+      - SPRING_DATASOURCE_USERNAME=finance_tracker_user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - JWT_SECRET=finance-tracker-jwt-secret-key-2024-super-secure-and-long-enough-for-production-use
+      - JWT_EXPIRATION=86400000
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - finance_network
+
+volumes:
+  postgres_data:
+
+networks:
+  finance_network:
+    driver: bridge
+

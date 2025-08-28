@@ -1,0 +1,11 @@
+/* Test CSS file to verify CSS processing */
+.test-basic-css {
+  background-color: red;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.test-tailwind-utilities {
+  @apply bg-blue-500 text-white p-4 rounded-lg;
+}

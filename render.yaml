@@ -4,6 +4,7 @@ services:
     env: docker
     plan: free
     region: oregon
+    rootDir: ./backend
     healthCheckPath: /api/health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -18,6 +19,18 @@ services:
         value: "admin123"
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/finance-tracker-0.0.1-SNAPSHOT.jar
+
+  - type: web
+    name: finance-tracker-frontend
+    env: node
+    plan: free
+    region: oregon
+    rootDir: ./frontend
+    buildCommand: npm ci && npm run build
+    startCommand: npm run preview
+    envVars:
+      - key: VITE_API_URL
+        value: https://finance-tracker-api.onrender.com/api
 
 databases:
   - name: finance-tracker-db
