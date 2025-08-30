@@ -5,12 +5,6 @@ spring:
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/finance_tracker}
     driver-class-name: org.postgresql.Driver
-    # Simplified connection pool settings
-    hikari:
-      connection-timeout: 30000
-      maximum-pool-size: 5
-      minimum-idle: 1
-      connection-test-query: SELECT 1
   
   jpa:
     hibernate:
@@ -37,12 +31,13 @@ server:
   servlet:
     context-path: /api
 
-# Logging - Focused debugging
+# Logging
 logging:
   level:
-    com.financeapp: DEBUG
-    com.zaxxer.hikari: DEBUG
-    org.postgresql: DEBUG
+    com.financeapp: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
 
 # Swagger/OpenAPI
 springdoc:

@@ -6,8 +6,6 @@ services:
     region: oregon
     healthCheckPath: /api/health
     envVars:
-      - key: DATABASE_URL
-        value: "jdbc:postgresql://neondb_owner:npg_Wl5msPnEg9fL@ep-proud-mode-a1qj37lz.ap-southeast-1.aws.neon.tech/perfin?sslmode=require"
       - key: SPRING_PROFILES_ACTIVE
         value: render
       - key: JWT_SECRET
@@ -24,4 +22,5 @@ services:
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/finance-tracker-0.0.1-SNAPSHOT.jar
 
-# Using external Neon database - no managed database needed
+# DATABASE_URL should be set manually in Render dashboard
+# Use the Neon connection string with proper jdbc: prefix
