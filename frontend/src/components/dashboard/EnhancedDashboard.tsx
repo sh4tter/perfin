@@ -57,6 +57,10 @@ const EnhancedDashboard: React.FC = () => {
       .catch(() => setApiTest('authentication error'));
   }, []);
 
+  // Safe check for apiTest with fallback
+  const isApiConnected = apiTest && typeof apiTest === 'string' && apiTest.includes('success');
+  const apiStatusText = isApiConnected ? 'Connected' : 'Checking...';
+
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
@@ -80,8 +84,8 @@ const EnhancedDashboard: React.FC = () => {
               </div>
               <div className="text-right">
                 <p className="text-sm text-primary-100">Auth Status</p>
-                <p className={`font-semibold ${apiTest.includes('success') ? 'text-green-200' : 'text-yellow-200'}`}>
-                  {apiTest.includes('success') ? 'Connected' : 'Checking...'}
+                <p className={`font-semibold ${isApiConnected ? 'text-green-200' : 'text-yellow-200'}`}>
+                  {apiStatusText}
                 </p>
               </div>
             </div>
