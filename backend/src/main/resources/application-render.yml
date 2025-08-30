@@ -4,6 +4,8 @@ spring:
   
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/finance_tracker}
+    username: ${DB_USERNAME:finance_tracker_user}
+    password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   
   jpa:
