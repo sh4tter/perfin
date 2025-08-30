@@ -4,15 +4,10 @@ services:
     env: docker
     plan: free
     region: oregon
-    rootDir: ./backend
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL
-        value: "jdbc:postgresql://ep-proud-mode-a1qj37lz-pooler.ap-southeast-1.aws.neon.tech/perfin?sslmode=require&channel_binding=require"
-      - key: DB_USERNAME
-        value: "neondb_owner"
-      - key: DB_PASSWORD
-        value: "npg_Wl5msPnEg9fL"
+        value: "jdbc:postgresql://neondb_owner:npg_Wl5msPnEg9fL@ep-proud-mode-a1qj37lz-pooler.ap-southeast-1.aws.neon.tech/perfin?sslmode=require&channel_binding=require"
       - key: SPRING_PROFILES_ACTIVE
         value: render
       - key: JWT_SECRET
@@ -38,14 +33,4 @@ services:
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/finance-tracker-0.0.1-SNAPSHOT.jar
 
-  - type: web
-    name: finance-tracker-frontend
-    env: node
-    plan: free
-    region: oregon
-    rootDir: ./frontend
-    buildCommand: npm ci && npm run build
-    startCommand: npm run preview
-    envVars:
-      - key: VITE_API_URL
-        value: https://finance-tracker-api.onrender.com/api
+# Using external Neon database - no managed database needed
