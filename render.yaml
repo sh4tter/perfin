@@ -7,6 +7,8 @@ services:
     rootDir: ./backend
     healthCheckPath: /api/health
     envVars:
+      - key: DATABASE_URL
+        value: "postgresql://neondb_owner:npg_Wl5msPnEg9fL@ep-proud-mode-a1qj37lz-pooler.ap-southeast-1.aws.neon.tech/perfin?sslmode=require&channel_binding=require"
       - key: SPRING_PROFILES_ACTIVE
         value: render
       - key: JWT_SECRET
@@ -17,6 +19,15 @@ services:
         value: admin
       - key: ADMIN_PASSWORD
         value: "admin123"
+      # Database connection settings for better reliability with Neon
+      - key: SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT
+        value: "60000"
+      - key: SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT
+        value: "60000"
+      - key: SPRING_DATASOURCE_HIKARI_VALIDATION_TIMEOUT
+        value: "5000"
+      - key: SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE
+        value: "5"
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/finance-tracker-0.0.1-SNAPSHOT.jar
 
@@ -32,8 +43,4 @@ services:
       - key: VITE_API_URL
         value: https://finance-tracker-api.onrender.com/api
 
-databases:
-  - name: finance-tracker-db
-    databaseName: finance_tracker
-    user: finance_tracker_user
-    plan: free
+# Using external Neon database - no managed database needed

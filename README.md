@@ -40,62 +40,126 @@ A comprehensive personal finance tracking application built with Spring Boot bac
 - **Swagger/OpenAPI** - API documentation
 - **Maven** - Dependency management
 
-### Frontend (Coming Soon)
-- **React.js** - Frontend framework
+### Frontend
+- **React.js 19** - Frontend framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool and development server
+- **Tailwind CSS** - Styling framework
+- **React Router** - Client-side routing
 - **Axios** - HTTP client
-- **Chart.js** - Data visualization
-- **Tailwind CSS** - Styling
+- **Headless UI** - UI components
+
+## 📁 Project Structure
+
+```
+perfin/
+├── backend/                 # Spring Boot API
+│   ├── src/
+│   │   ├── main/java/com/financeapp/
+│   │   │   ├── config/     # Configuration classes
+│   │   │   ├── controller/ # REST controllers
+│   │   │   ├── dto/        # Data Transfer Objects
+│   │   │   ├── entity/     # JPA entities
+│   │   │   ├── exception/  # Exception handlers
+│   │   │   ├── repository/ # Data repositories
+│   │   │   ├── security/   # Security configuration
+│   │   │   └── service/    # Business logic
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       └── application-render.yml
+│   ├── pom.xml
+│   ├── Dockerfile
+│   └── mvnw, mvnw.cmd
+├── frontend/               # React Application
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   │   ├── auth/      # Authentication components
+│   │   │   ├── dashboard/ # Dashboard components
+│   │   │   └── layout/    # Layout components
+│   │   ├── contexts/      # React contexts
+│   │   ├── services/      # API services
+│   │   └── types/         # TypeScript types
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   └── .env.*
+├── render.yaml             # Deployment configuration
+└── README.md
+```
 
 ## 📋 Prerequisites
 
 - Java 17 or higher
 - Maven 3.6+
-- PostgreSQL 12+
-- Node.js 16+ (for frontend)
+- Node.js 18+
+- PostgreSQL 12+ (for production)
 
 ## 🚀 Quick Start
 
-### 1. Database Setup
+### 1. Development Environment
 
-Create a PostgreSQL database:
+#### Option A: Full Stack Development (Recommended)
+```bash
+# Run both frontend and backend together
+./start-dev-full.ps1
+```
+
+This will start:
+- Backend: http://localhost:8080/api
+- Frontend: http://localhost:3000
+- Swagger: http://localhost:8080/api/swagger-ui.html
+
+#### Option B: Individual Services
+
+**Backend Only:**
+```bash
+./start-backend.bat     # Windows
+./start-dev.ps1         # PowerShell
+```
+
+**Frontend Only:**
+```bash
+./start-frontend.bat    # Windows
+# Or manually:
+cd frontend && npm run dev
+```
+
+#### Option C: Manual Start
+
+**Backend:**
+```bash
+cd backend
+docker-compose up -d    # Start PostgreSQL
+./mvnw spring-boot:run  # Start Spring Boot
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### 2. Database Setup
+
+For development, the application uses H2 in-memory database by default.
+
+For production with PostgreSQL:
 ```sql
 CREATE DATABASE finance_tracker;
 ```
 
-### 2. Backend Setup
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd finance-tracker
-```
-
-2. Update database configuration in `src/main/resources/application.yml`:
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/finance_tracker
-    username: your_username
-    password: your_password
-```
-
-3. Run the application:
-```bash
-mvn spring-boot:run
-```
-
-The backend will start on `http://localhost:8080`
-
-### 3. API Documentation
-
-Access Swagger UI at: `http://localhost:8080/api/swagger-ui.html`
+Update `backend/src/main/resources/application.yml` with your database credentials.
 
 ## 📚 API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
-- `GET /api/auth/test` - Test endpoint
+- `GET /api/auth/test` - Test endpoint (authenticated)
+
+### Health
+- `GET /api/health` - Health check
 
 ### Example Usage
 
@@ -122,77 +186,110 @@ curl -X POST http://localhost:8080/api/auth/login \
 
 ## 🧪 Testing
 
-Run tests with Maven:
+### Backend Tests
 ```bash
-mvn test
+cd backend
+./mvnw test
 ```
 
-## 📁 Project Structure
-
+### Frontend Tests
+```bash
+cd frontend
+npm test
 ```
-src/
-├── main/
-│   ├── java/com/financeapp/
-│   │   ├── config/          # Configuration classes
-│   │   ├── controller/      # REST controllers
-│   │   ├── dto/            # Data Transfer Objects
-│   │   ├── entity/         # JPA entities
-│   │   ├── exception/      # Exception handlers
-│   │   ├── repository/     # Data repositories
-│   │   ├── security/       # Security configuration
-│   │   ├── service/        # Business logic
-│   │   └── FinanceTrackerApplication.java
-│   └── resources/
-│       └── application.yml
-└── test/                   # Test files
+
+## 🚀 Deployment
+
+### Render (Recommended)
+
+This project is configured for easy deployment on Render with both backend and frontend services.
+
+1. **Fork/Clone the repository**
+2. **Connect to Render**
+   - Go to [render.com](https://render.com)
+   - Create new "Blueprint"
+   - Connect your repository
+   - Render will automatically deploy both services
+
+3. **Environment Variables**
+   - Backend environment variables are configured in `render.yaml`
+   - Frontend automatically points to the backend API
+   - Database is automatically provisioned
+
+4. **URLs after deployment:**
+   - Backend API: `https://finance-tracker-api.onrender.com/api`
+   - Frontend: `https://finance-tracker-frontend.onrender.com`
+   - Swagger: `https://finance-tracker-api.onrender.com/api/swagger-ui.html`
+
+### Manual Deployment
+
+#### Backend
+```bash
+cd backend
+./mvnw clean package
+java -jar target/finance-tracker-0.0.1-SNAPSHOT.jar
+```
+
+#### Frontend
+```bash
+cd frontend
+npm run build
+npm run preview
 ```
 
 ## 🔧 Configuration
 
-Key configuration options in `application.yml`:
+### Backend Configuration
 
+Key configuration in `backend/src/main/resources/application.yml`:
 - **Database**: PostgreSQL connection settings
 - **JWT**: Secret key and expiration time
+- **CORS**: Allowed origins for frontend
 - **Server**: Port and context path
-- **Logging**: Debug levels for development
 
-## 🚀 Deployment
+### Frontend Configuration
 
-### Backend Deployment
-1. Build the JAR file:
-```bash
-mvn clean package
-```
+Environment variables in `frontend/.env.*`:
+- `VITE_API_URL`: Backend API URL
 
-2. Run the JAR:
-```bash
-java -jar target/finance-tracker-0.0.1-SNAPSHOT.jar
-```
+## 🛡️ Security Features
 
-### Environment Variables
-Set these environment variables for production:
-- `SPRING_DATASOURCE_URL`
-- `SPRING_DATASOURCE_USERNAME`
-- `SPRING_DATASOURCE_PASSWORD`
-- `JWT_SECRET`
+- JWT-based authentication
+- CORS configuration for frontend
+- Password hashing with BCrypt
+- Role-based access control
+- HTTPS enforced in production
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🆘 Support
 
-For support, email support@financetracker.com or create an issue in the repository.
+- **Documentation**: Check this README and inline comments
+- **Issues**: Create GitHub issues for bugs or feature requests
+- **API Documentation**: Visit `/api/swagger-ui.html` when running locally
 
----
+## 🔄 Changelog
 
-**Note**: This is a work in progress. Frontend implementation and additional features will be added in subsequent weeks.
+### v0.2.0 (Current)
+- ✅ Separated frontend and backend
+- ✅ Vite React frontend with TypeScript
+- ✅ Tailwind CSS styling
+- ✅ JWT authentication flow
+- ✅ Render deployment configuration
+- ✅ CORS configuration for separated services
 
+### v0.1.0
+- ✅ Initial Spring Boot backend
+- ✅ JWT authentication
+- ✅ PostgreSQL integration
+- ✅ Basic security configuration
