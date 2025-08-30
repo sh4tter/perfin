@@ -7,7 +7,7 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL
-        value: "jdbc:postgresql://neondb_owner:npg_Wl5msPnEg9fL@ep-proud-mode-a1qj37lz-pooler.ap-southeast-1.aws.neon.tech/perfin?sslmode=require&channel_binding=require"
+        value: "jdbc:postgresql://neondb_owner:npg_Wl5msPnEg9fL@ep-proud-mode-a1qj37lz.ap-southeast-1.aws.neon.tech/perfin?sslmode=require"
       - key: SPRING_PROFILES_ACTIVE
         value: render
       - key: JWT_SECRET
